@@ -7,6 +7,35 @@ Description: >
 Parameters:
   AllowedOrigin:
     Type: 'String'
+    Description: The origin that will be used in CORS.
+    Default: 'https://xxxxxx.amplifyapp.com'
+
+  #Dynatrace SSM Parameters  
+  DtOneAgentLambdaARNSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/OneAgentLambdaARN'
+  DtAwsLambdaExecWrapperSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/LambdaExecWrapper'
+  DtTenantSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/Tenant'
+  DtClusterIdSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/dtClusterId'
+  DtConnectionBaseUrlSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/ConnectionBaseUrl'
+  DtConnectionAuthTokenSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/ConnectionAuthToken'
+  DtLogCollectionAuthTokenSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/LogCollectionAuthToken'    
+  DtOpenTelemetryEnableIntegrationSSM:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/OpenTelemetryEnableIntegration'
+    
 
 Globals:
   Function:
@@ -14,6 +43,8 @@ Globals:
     Tracing: Active
     AutoPublishAlias: live
     Runtime: python3.8
+    Layers:
+      - !Ref DtOneAgentLambdaARNSSM
     MemorySize: 2048
     Environment:
       Variables:
@@ -21,20 +52,30 @@ Globals:
         ALLOWED_ORIGIN: !Ref AllowedOrigin
         POWERTOOLS_SERVICE_NAME: product-mock
         POWERTOOLS_METRICS_NAMESPACE: ecommerce-app
+        # Dynatrace parameters
+        AWS_LAMBDA_EXEC_WRAPPER: !Ref DtAwsLambdaExecWrapperSSM
+        DT_TENANT: !Ref DtTenantSSM
+        DT_CLUSTER_ID: !Ref DtClusterIdSSM
+        DT_CONNECTION_BASE_URL: !Ref DtConnectionBaseUrlSSM
+        DT_CONNECTION_AUTH_TOKEN: !Ref DtConnectionAuthTokenSSM
+        DT_LOG_COLLECTION_AUTH_TOKEN: !Ref DtLogCollectionAuthTokenSSM
+        DT_OPEN_TELEMETRY_ENABLE_INTEGRATION: !Ref DtOpenTelemetryEnableIntegrationSSM
   Api:
     EndpointConfiguration: REGIONAL
     TracingEnabled: true
     OpenApiVersion: '2.0'
     Cors:
       AllowMethods: "'OPTIONS,POST,GET'"
-      AllowHeaders: "'Content-Type'"
+      # Additional Dynatrace headers
+      AllowHeaders: "'Content-Type,Authorization,x-dynatrace,traceparent,tracestate,x-dtc,referer,host,x-forwarded-proto,x-forwarded-for,x-forwarded-port'"
       AllowOrigin: !Sub "'${AllowedOrigin}'"
 
 Resources:
   GetProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: product-mock-service/
+      #CodeUri: product-mock-service/
+      CodeUri: s3://aws-serverless-shopping-cart-src-133220408703-us-east-1/7e5a8c90a5652442e5c77579f7eb6a95
       Handler: get_product.lambda_handler
       Events:
         ListCart:
@@ -46,7 +87,8 @@ Resources:
   GetProductsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: product-mock-service/
+      #CodeUri: product-mock-service/
+      CodeUri: s3://aws-serverless-shopping-cart-src-133220408703-us-east-1/7e5a8c90a5652442e5c77579f7eb6a95
       Handler: get_products.lambda_handler
       Events:
         ListCart:
