@@ -16,6 +16,8 @@ Parameters:
   ProductServiceUrl:
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/serverless-shopping-cart-demo/products/products-api-url'
+  AllowedOrigin:
+    Type: 'String'
   #Dynatrace SSM Parameters  
   DtOneAgentLambdaARNSSM:
     Type: 'AWS::SSM::Parameter::Value<String>'
