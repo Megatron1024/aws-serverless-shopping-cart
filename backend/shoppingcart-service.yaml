@@ -4,7 +4,7 @@ Description: >
   shoppingcart-service
 
   SAM Template for shoppingcart-service
-  Testing if this works newly
+  Testing if this works newly?
 
 Parameters:
   UserPoolArn:
@@ -65,8 +65,7 @@ Globals:
       Variables:
         TABLE_NAME: !Ref DynamoDBShoppingCartTable
         LOG_LEVEL: "INFO"
-        #ALLOWED_ORIGIN: !Ref AllowedOrigin
-        ALLOWED_ORIGIN: "https://master.d26gsif82g0cio.amplifyapp.com"
+        ALLOWED_ORIGIN: !Ref AllowedOrigin
         POWERTOOLS_SERVICE_NAME: shopping-cart
         POWERTOOLS_METRICS_NAMESPACE: ecommerce-app
         # Dynatrace parameters
