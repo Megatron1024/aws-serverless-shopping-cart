@@ -4,6 +4,7 @@ Description: >
   shoppingcart-service
 
   SAM Template for shoppingcart-service
+  Testing if this works newly
 
 Parameters:
   UserPoolArn:
@@ -15,8 +16,15 @@ Parameters:
   ProductServiceUrl:
     Type: 'AWS::SSM::Parameter::Value<String>'
     Default: '/serverless-shopping-cart-demo/products/products-api-url'
+  #Newly added allowed origin
+
+
   AllowedOrigin:
-    Type: 'String'
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: '/dt/amrith/allowedOrigin'
+
+
+
   #Dynatrace SSM Parameters  
   DtOneAgentLambdaARNSSM:
     Type: 'AWS::SSM::Parameter::Value<String>'
@@ -57,7 +65,8 @@ Globals:
       Variables:
         TABLE_NAME: !Ref DynamoDBShoppingCartTable
         LOG_LEVEL: "INFO"
-        ALLOWED_ORIGIN: !Ref AllowedOrigin
+        #ALLOWED_ORIGIN: !Ref AllowedOrigin
+        ALLOWED_ORIGIN: "https://master.d26gsif82g0cio.amplifyapp.com"
         POWERTOOLS_SERVICE_NAME: shopping-cart
         POWERTOOLS_METRICS_NAMESPACE: ecommerce-app
         # Dynatrace parameters
