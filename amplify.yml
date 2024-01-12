@@ -1,9 +1,8 @@
 version: 1
 env:
   variables:
-      ORIGIN: https://${AWS_BRANCH//\//-}.${AWS_APP_ID}.amplifyapp.com
-      # ADDED CUSTOM DOMAIN NAME:
-      #ORIGIN: https://serverless-app.amrith.me
+      #ORIGIN: https://${AWS_BRANCH//\//-}.${AWS_APP_ID}.amplifyapp.com
+      ORIGIN: https://master.d26gsif82g0cio.amplifyapp.com
       STACKNAME: amplify-aws-serverless-shopping-cart
 backend:
   phases:
