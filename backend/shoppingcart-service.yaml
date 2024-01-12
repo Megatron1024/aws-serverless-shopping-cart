@@ -77,7 +77,8 @@ Globals:
       AllowMethods: "'OPTIONS,POST,GET,PUT'"
       AllowHeaders: '''Content-Type,Authorization,x-dynatrace,traceparent,tracestate,x-dtc,referer,host,x-forwarded-proto,x-forwarded-for,x-forwarded-port'''
       AllowCredentials: true
-      AllowOrigin: !Sub "'${AllowedOrigin}'"
+      AllowOrigin: "'https://master.d26gsif82g0cio.amplifyapp.com'"
+      #AllowOrigin: !Sub "'${AllowedOrigin}'"
 
 Resources:
   UtilsLayer:
